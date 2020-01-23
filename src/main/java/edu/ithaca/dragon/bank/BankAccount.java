@@ -39,8 +39,27 @@ public class BankAccount {
         if (email.indexOf('@') == -1){
             return false;
         }
+        else if (email.indexOf('#') != -1 || email.indexOf(' ') != -1){
+            return false;
+        }
+        else if (email.indexOf('.') >= email.length() - 2){
+            return false;
+        }
+        else if (email.indexOf('.') == -1){
+            return false;
+        }
+        else if (email.indexOf('-') == email.indexOf('@') - 1){
+            return false;
+        }
+        else if (email.charAt(0) == '.'){
+            return false;
+        }
+        else if (email.charAt(email.indexOf('.') + 1) == '.'){
+            return false;
+        }
         else {
             return true;
         }
     }
+
 }
