@@ -18,7 +18,7 @@ public class BankAccount {
         }
     }
 
-    public double getBalance(){
+    public double getBalance() {
         return balance;
     }
 
@@ -28,8 +28,9 @@ public class BankAccount {
 
     /**
      * @post reduces the balance by amount if amount is non-negative and smaller than balance
+     * Should throw an InsuffiecientFundsException if amount is negative or larger than balance
      */
-    public void withdraw (double amount)  {
+    public void withdraw (double amount) throws InsufficientFundsException {
         balance -= amount;
 
     }

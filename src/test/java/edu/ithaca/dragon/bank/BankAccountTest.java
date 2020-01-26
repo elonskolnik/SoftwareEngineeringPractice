@@ -14,11 +14,37 @@ class BankAccountTest {
     }
 
     @Test
-    void withdrawTest() {
+    void withdrawTest() throws InsufficientFundsException {
+        //amount is positive and smaller than account balance
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
         bankAccount.withdraw(100);
-
         assertEquals(100, bankAccount.getBalance());
+
+        //amount is positive and equal to account balance (edge case)
+        bankAccount = new BankAccount("a@b.com", 300);
+        bankAccount.withdraw(300);
+        assertEquals(0, bankAccount.getBalance());
+
+        //amount is positive but slightly larger than account balance
+        assertThrows(InsufficientFundsException.class, () -> new BankAccount("a@b.com", 200).withdraw(201));
+
+        //amount is positive and much larger than account balance
+        assertThrows(InsufficientFundsException.class, () -> new BankAccount("a@b.com", 200).withdraw(600));
+
+        //amount is negative and abs val smaller than account balance
+        bankAccount = new BankAccount("a@b.com", 200);
+        bankAccount.withdraw(-1);
+        assertEquals(200, bankAccount.getBalance());
+
+        //amount is negative and abs val equal to account balance
+        bankAccount = new BankAccount("a@b.com", 200);
+        bankAccount.withdraw(-200);
+        assertEquals(200, bankAccount.getBalance());
+
+        //amount is negative and abs val larger than account balance
+        bankAccount = new BankAccount("a@b.com", 200);
+        bankAccount.withdraw(-500);
+        assertEquals(200, bankAccount.getBalance());
     }
 
     @Test
