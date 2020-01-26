@@ -8,9 +8,22 @@ class BankAccountTest {
 
     @Test
     void getBalanceTest() {
+        //check large positive balance
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
-
         assertEquals(200, bankAccount.getBalance());
+
+        //check small positive balance
+        bankAccount = new BankAccount("a@b.com", 5);
+        assertEquals(5, bankAccount.getBalance());
+
+        //check zero balance
+        bankAccount = new BankAccount("a@b.com", 0);
+        assertEquals(0, bankAccount.getBalance());
+
+        //check negative balance?
+        bankAccount = new BankAccount("a@b.com", -200);
+        assertEquals(-200, bankAccount.getBalance());
+
     }
 
     @Test
