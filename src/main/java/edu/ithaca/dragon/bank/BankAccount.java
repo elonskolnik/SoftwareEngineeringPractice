@@ -44,7 +44,10 @@ public class BankAccount {
 
     }
 
-
+    /**
+     *
+     * @return true if the given email is valid
+     */
     public static boolean isEmailValid(String email){
         if (email.indexOf('@') == -1){
             return false;
@@ -76,7 +79,18 @@ public class BankAccount {
      * Returns false otherwise
      */
     public static boolean isAmountValid(double amount){
+        if(amount > 0){
+            String amtString = Double.toString(amount);
+            int pdIndex = amtString.indexOf('.');
+            if(pdIndex == -1){
+                return true;
+            }
+            else{
+                if((amtString.length() - pdIndex) <= 3){
+                    return true;
+                }
+            }
+        }
         return false;
     }
-
 }
