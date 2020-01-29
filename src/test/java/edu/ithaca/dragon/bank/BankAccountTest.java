@@ -8,13 +8,17 @@ class BankAccountTest {
 
     @Test
     void getBalanceTest() {
-        //check large positive balance
+        //check positive balance with no decimal points
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
         assertEquals(200, bankAccount.getBalance());
 
-        //check small positive balance
-        bankAccount = new BankAccount("a@b.com", 5);
-        assertEquals(5, bankAccount.getBalance());
+        //check positive balance with one decimal point
+        bankAccount = new BankAccount("a@b.com", 145.5);
+        assertEquals(145.5, bankAccount.getBalance());
+
+        //check positive balance with two decimal points
+        bankAccount = new BankAccount("a@b.com", 250.21);
+        assertEquals(250.21, bankAccount.getBalance());
     }
 
     @Test
@@ -78,10 +82,15 @@ class BankAccountTest {
 
     @Test
     void constructorTest() {
+        //checks normal bankAccount
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
-
         assertEquals("a@b.com", bankAccount.getEmail());
         assertEquals(200, bankAccount.getBalance());
+
+        //check bankAccount with two decimal points
+        bankAccount = new BankAccount("a@b.com", 200.54);
+        assertEquals("a@b.com", bankAccount.getEmail());
+        assertEquals(200.54, bankAccount.getBalance());
 
         //check for exception thrown correctly
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("", 100));
@@ -110,6 +119,42 @@ class BankAccountTest {
         assertFalse(BankAccount.isAmountValid(-289.3)); //negative value with one decimal point
         assertFalse(BankAccount.isAmountValid(-23.53)); //negative value with two decimal points
         assertFalse(BankAccount.isAmountValid(-6323.552)); //negative value with three decimal points
+    }
+
+    @Test
+    void depositTest(){
+        //positive value less than current balance
+        BankAccount bankAccount = new BankAccount("a@b.com", 200);
+        bankAccount.deposit(100);
+        assertEquals(300, bankAccount.getBalance());
+
+        //positive value equal to current balance
+        bankAccount = new BankAccount("a@b.com", 200);
+        bankAccount.deposit(200);
+        assertEquals(400, bankAccount.getBalance());
+
+        //positive value greater than equal balance
+        bankAccount = new BankAccount("a@b.com", 200);
+        bankAccount.deposit(500);
+        assertEquals(700, bankAccount.getBalance());
+
+        //two deposits in a row
+        bankAccount.deposit(300);
+        assertEquals(1000, bankAccount.getBalance());
+
+        //positive number, two decimal points
+        bankAccount = new BankAccount("a@b.com", 200);
+        bankAccount.deposit(300.67);
+        assertEquals(500.67, bankAccount.getBalance());
+
+        //zero value
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 200).deposit(0));
+
+        //negative value
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 200).deposit(-50));
+
+        //value with more than two significant figures
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 200).deposit(50.263));
     }
 
 }

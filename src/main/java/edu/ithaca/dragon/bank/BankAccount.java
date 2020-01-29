@@ -33,7 +33,7 @@ public class BankAccount {
 
     /**
      * @post reduces the balance by amount if amount is non-negative and smaller than balance
-     * Should throw an InsuffiecientFundsException if amount is larger than balance
+     * @throws InsufficientFundsException if amount is larger than balance
      * Should do nothing if amount is negative
      */
     public void withdraw (double amount) throws InsufficientFundsException {
@@ -83,7 +83,7 @@ public class BankAccount {
         }
     }
     /**
-     * Returns true if the given amount is positive and has two or less decimal points
+     * @return true if the given amount is positive and has two or less decimal points
      * Returns false otherwise
      */
     public static boolean isAmountValid(double amount){
@@ -100,5 +100,20 @@ public class BankAccount {
             }
         }
         return false;
+    }
+
+    /**
+     * @post adds the given amount to the current balance
+     */
+    public void deposit(double amount){
+
+    }
+
+    /**
+     * @post subtracts the given amount from this bank account and deposits it into another
+     * @param bankAccount is the other bankAccount this one should transfer to
+     */
+    public void transfer(BankAccount bankAccount, double amount){
+
     }
 }
