@@ -118,9 +118,10 @@ public class BankAccount {
     /**
      * @post subtracts the given amount from this bank account and deposits it into another
      * @param bankAccount is the other bankAccount this one should transfer to
-     * @throws IllegalArgumentException if amount is not valid
+     * @throws IllegalArgumentException if amount is not valid, or if other bankAccount is null
+     * @throws InsufficientFundsException if amount is greater than balance
      */
-    public void transfer(BankAccount bankAccount, double amount){
+    public void transfer(BankAccount bankAccount, double amount) throws InsufficientFundsException{
 
     }
 }

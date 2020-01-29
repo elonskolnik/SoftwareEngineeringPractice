@@ -92,8 +92,9 @@ class BankAccountTest {
         assertEquals("a@b.com", bankAccount.getEmail());
         assertEquals(200.54, bankAccount.getBalance());
 
-        //check for exception thrown correctly
+        //check for exceptions thrown correctly
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("", 100));
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 0)); //zero balance
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", -100)); //negative balance
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 100.421)); //more than two significant digits
     }
@@ -155,6 +156,64 @@ class BankAccountTest {
 
         //value with more than two significant figures
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 200).deposit(50.263));
+    }
+
+    @Test
+    void transferTest() throws InsufficientFundsException{
+        //bankAccountA balance greater than bankAccountB
+        BankAccount bankAccountA = new BankAccount("a@b.com", 400);
+        BankAccount bankAccountB = new BankAccount("a@c.com", 200);
+        bankAccountA.transfer(bankAccountB, 300);
+        assertEquals(100, bankAccountA.getBalance());
+        assertEquals(500, bankAccountB.getBalance());
+
+        //account balances equal
+        bankAccountA = new BankAccount("a@b.com", 200);
+        bankAccountB = new BankAccount("a@c.com", 200);
+        bankAccountA.transfer(bankAccountB, 100);
+        assertEquals(100, bankAccountA.getBalance());
+        assertEquals(300, bankAccountB.getBalance());
+
+        //two transfers in a row
+        bankAccountA.transfer(bankAccountB, 50);
+        assertEquals(50, bankAccountA.getBalance());
+        assertEquals(350, bankAccountB.getBalance());
+
+        //bankAccountB balance greater than bankAccountA
+        bankAccountA = new BankAccount("a@b.com", 100);
+        bankAccountB = new BankAccount("a@c.com", 800);
+        bankAccountA.transfer(bankAccountB, 50);
+        assertEquals(50, bankAccountA.getBalance());
+        assertEquals(850, bankAccountB.getBalance());
+
+        //transfer of two decimal points
+        bankAccountA = new BankAccount("a@b.com", 200.56);
+        bankAccountB = new BankAccount("a@c.com", 420.44);
+        bankAccountA.transfer(bankAccountB, 100.56);
+        assertEquals(100, bankAccountA.getBalance());
+        assertEquals(521, bankAccountB.getBalance());
+
+        //transfer equal to bankAccountA balance
+        bankAccountA = new BankAccount("a@b.com", 300.55);
+        bankAccountB = new BankAccount("a@c.com", 200);
+        bankAccountA.transfer(bankAccountB, 300.55);
+        assertEquals(0, bankAccountA.getBalance());
+        assertEquals(500.55, bankAccountB.getBalance());
+
+        //transfer greater than bankAccountA balance
+        assertThrows(InsufficientFundsException.class, ()-> new BankAccount("a@b.com", 200).transfer(new BankAccount("a@c.com", 500),250));
+
+        //transfer of zero dollars
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 445.32).transfer(new BankAccount("a@c.com", 200), 0));
+
+        //transfer of negative value
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 300).transfer(new BankAccount("a@c.com", 300), -24));
+
+        //transfer of more than two decimal points
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 63.45).transfer(new BankAccount("a@c.com", 22.42), 25.452));
+
+        //transfer to bankAccount with the same email
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 552).transfer(new BankAccount("a@c.com", 300), 20));
     }
 
 }
