@@ -211,9 +211,6 @@ class BankAccountTest {
 
         //transfer of more than two decimal points
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 63.45).transfer(new BankAccount("a@c.com", 22.42), 25.452));
-
-        //transfer to bankAccount with the same email
-        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 552).transfer(new BankAccount("a@c.com", 300), 20));
     }
 
 }
