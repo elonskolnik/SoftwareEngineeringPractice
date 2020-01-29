@@ -62,6 +62,15 @@ class BankAccountTest {
         bankAccount = new BankAccount("a@b.com", 200);
         bankAccount.withdraw(-500);
         assertEquals(200, bankAccount.getBalance());
+
+        //checks zero argument throws exception correctly
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 200).withdraw(0));
+
+        //check negative argument throws exception correctly
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 200).withdraw(-42));
+
+        //check more than two significant numbers argument throws exception correctly
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 200).withdraw(4.252));
     }
 
     @Test
@@ -97,8 +106,11 @@ class BankAccountTest {
 
         assertEquals("a@b.com", bankAccount.getEmail());
         assertEquals(200, bankAccount.getBalance());
+
         //check for exception thrown correctly
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("", 100));
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", -100)); //negative balance
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 100.421)); //more than two significant digits
     }
 
     @Test
