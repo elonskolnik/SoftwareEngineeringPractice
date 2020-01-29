@@ -104,14 +104,21 @@ public class BankAccount {
 
     /**
      * @post adds the given amount to the current balance
+     * @throws IllegalArgumentException if amount is not valid
      */
     public void deposit(double amount){
-
+        if(isAmountValid(amount)){
+            balance += amount;
+        }
+        else{
+            throw new IllegalArgumentException("Given amount is not valid");
+        }
     }
 
     /**
      * @post subtracts the given amount from this bank account and deposits it into another
      * @param bankAccount is the other bankAccount this one should transfer to
+     * @throws IllegalArgumentException if amount is not valid
      */
     public void transfer(BankAccount bankAccount, double amount){
 
