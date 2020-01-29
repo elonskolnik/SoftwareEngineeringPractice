@@ -15,15 +15,6 @@ class BankAccountTest {
         //check small positive balance
         bankAccount = new BankAccount("a@b.com", 5);
         assertEquals(5, bankAccount.getBalance());
-
-        //check zero balance
-        bankAccount = new BankAccount("a@b.com", 0);
-        assertEquals(0, bankAccount.getBalance());
-
-        //check negative balance?
-        bankAccount = new BankAccount("a@b.com", -200);
-        assertEquals(-200, bankAccount.getBalance());
-
     }
 
     @Test
@@ -47,21 +38,6 @@ class BankAccountTest {
 
         //amount is positive and much larger than account balance
         assertThrows(InsufficientFundsException.class, () -> new BankAccount("a@b.com", 200).withdraw(600));
-
-        //amount is negative and abs val smaller than account balance
-        bankAccount = new BankAccount("a@b.com", 200);
-        bankAccount.withdraw(-1);
-        assertEquals(200, bankAccount.getBalance());
-
-        //amount is negative and abs val equal to account balance
-        bankAccount = new BankAccount("a@b.com", 200);
-        bankAccount.withdraw(-200);
-        assertEquals(200, bankAccount.getBalance());
-
-        //amount is negative and abs val larger than account balance
-        bankAccount = new BankAccount("a@b.com", 200);
-        bankAccount.withdraw(-500);
-        assertEquals(200, bankAccount.getBalance());
 
         //checks zero argument throws exception correctly
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", 200).withdraw(0));
